@@ -1,0 +1,120 @@
+---
+title: "Capacidades analíticas"
+author: "Miriam Castello Candela"
+date: "`r Sys.Date()`" 
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Contexto: el problema
+Disponemos de una recopilación de datos (Montgomery & Peck, 1982) relativos al tiempo de entrega (delTime) de máquinas expendedoras (desde que se gestiona la compra), junto con lo que vamos a entender como el número de productos demandados (n.prod) y la distancia entre el proveedor y el comprador (distance).
+
+
+
+```{r}
+data(delivery, package="robustbase")
+```
+```{r}
+summary(delivery)
+
+```
+
+
+
+# Actividades
+
+## (A) Expectativas
+Ponte en el lugar del cliente que solicita un pedido a la empresa: **¿cuáles serían tus expectativas de calidad relativas a los tiempos de entrega?**
+
+Cu�nto menos se tarde en hacer la entrega ser� mucho mejor ya que muestra el inter�s que tiene la empresa en satisfacer al cliente y en llegar a los objetivos propuestos.
+
+## (B) Problemas
+Es posible que la empresa tenga problemas para cumplir con los intereses de sus clientes. Investiga esta cuestión desde un punto de vista meramente descriptivo,a través de las cuestiones a continuación, y expresa tus conclusiones exclusivamente respondiendo a la pregunta **¿qué problemas parece tener la empresa para cumplir con las expectativas de sus clientes?**
+
+```{r}
+summary(delivery)
+```
+
+Podemos decir que para una media de 9 productos se tarda en llegar a su destino una media de 409 km en 22 dias
+
+
+
+
+
+ 
+- ¿Cuál suele ser el número de máquinas demandadas en cada pedido? 
+
+Suelen ser unos 4 productos.
+
+- ¿A qué distancia están los compradores?
+
+Est�n entre 36 y 1460 km
+
+- ¿Cuántos días suele tardar en llegar un pedido?
+
+Pueden tardar entre 8 y 79 d�as.
+
+- ¿Qué relación existe entre los tiempos de entrega y el volumen de los pedidos?
+```{r}
+cor(delivery$delTime, delivery$n.prod)
+```
+La relaci�n entre los tiempos de entrega y el volumen de los pedidos es bastante alta, por lo que podemos decir que cuanto mayor es el volumen de los pedidos m�s tiempo tardar� en llegar a su destino.
+- ¿Qué relación existe entre los tiempos de entrega de los pedidos y la distancia al proveedor?
+```{r}
+cor(delivery$delTime, delivery$distance)
+```
+ La relaci�n entre los tiempos de entrega y la distancia a recorrer es bastante alta por lo que podemos decir que cuantos m�s km haya que recorrer para poder llevar los paquetes, m�s tiempo se tardar�.
+ 
+- ¿Qué relación existe entre el volumen de los pedidos y la distancia al proveedor?
+```{r}
+cor(delivery$n.prod, delivery$distance)
+```
+La relaci�n entre el volumen de los pedidos y la distancia a recorrer es bastante alta por lo que podemos decir que cuanto m�s volumen de productos m�s se tardar� en entregar. 
+
+## (C) Tiempos
+La empresa quiere mejorar su servicio a los clientes. En concreto, quiere dar a sus clientes una estimación/rango de estimación “fiable” con el número de días que tardará en recibir su pedido. Investiga este objetivo a través de las cuestiones a continuación y expresa tus conclusiones exclusivamente respondiendo a la pregunta **¿cómo vas a estimar el tiempo de entrega en el próximo pedido que reciba la empresa?**
+```{r}
+plot(delivery$delTime)
+cor.test(delivery$delTime,delivery$n.prod)
+```
+
+La correlaci�n entre el tiempo de entrega en el pr�ximo pedido que haga la empresa es bastante algo, con un 96,46% podemos predecir el tiempo que podr�amos tardar en entregarlo.
+
+- ¿Qué información del cliente podrías aprovechar  para afinar la estimación del tiempo de entrega de su pedido? 
+
+Utilizar�a la variable distancia y la variable tiempo ya que est�n fuertemente correladas.
+
+- ¿En qué tipo de ventas la empresa tiene más información para proporcionar una estimación fiable del tiempo de entrega?
+
+
+# (D) Atendiendo un pedido
+Si la empresa recibiera hoy un pedido de 5 máquinas expendedoras, utilizando el guión de preguntas/tareas a continuación, expresa tus conclusiones respondiendo exclusivamente a la pregunta **¿cuánto tiempo tardaría en llegar el pedido de 5 máquinas?**
+
+
+
+
+- Utiliza un nivel de confianza del 99.9997% (6). ¿Cómo explicas al cliente y a la empresa el significado de ese intervalo de predicción, en términos de "calidad"?
+
+- ¿Puedes garantizar a todos los clientes, independientemente de dónde vivan, el mismo rango de variación en los días de entrega de su pedido? ¿Por qué?
+
+- ¿Consigues alguna predicción en la que el rango de variación que das al cliente sobre el tiempo que tardará en recibir el pedido, no supere los 5 días? ¿Y los 10 días?
+
+# (E) Conclusiones
+Concluye, en base a todo el análisis que has realizado, respondiendo la pregunta: **¿cuáles son los problemas más relevantes que has detectado y que afectan a la satisfacción de los clientes y en consecuencia a la imagen y fiabilidad de la empresa?**
+
+Lo que hemos podido comprobar es que el tiempo que se tarda en entregar el pedido y la distancia a la cual se encuentra el cliente es indispensable para poder tener buenos efectos de calidad por lo que esos problemas habr�a que revertirlos.
+
+## (F) Soluciones
+En base a los problemas que has detectado en tu análisis y a principios básicos de optimización, **qué soluciones/medidas de mejora le propondrías a la empresa para aliviarlos o eliminarlos.**
+
+Har�a un estudio por ver cu�nto es lo que menos podemos tardar recorriendo la m�xima distancia posible. Cuando hayamos visto cu�ndo ser�a ese punto �ptimo entonces se podr�a ver de poner almacenes y transporte para que pueda abarcar el mismo ratio que el almac�n principal y as� poder mantener esa imagen de calidad �ptima tanto en el transporte como en el producto anteriormente adquirido.. 
+
+
+## (G) Recursos
+Investiga librerías en R que te faciliten el análisis de la información y mejoren la forma de mostrar los resultados. Responde brevemente a la pregunta **¿qué librerías/funciones destacables has encontrado/utilizado, y cuáles son sus funcionalidades más relevantes?**
+
+He utilizado el summary para poder ver el resumen general de mis variables de estudio.
+Tambi�n he utilizado la funci�n de correlaci�n cor.test para poder saber si estas variables en concreto realmente est�n muy relacionadas entre s�, es decir, si realmente una depende de la otra y viceversa y con ello poder predecir.
